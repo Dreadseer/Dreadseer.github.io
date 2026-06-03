@@ -92,7 +92,8 @@ function Contact() {
     // 5. Insert the row into the Supabase messages table
     const { error } = await supabase
       .from('messages')
-      .insert([{ name: form.name.trim(), email: form.email.trim(), message: form.message.trim() }])
+      // columns: false prevents Supabase from adding a ?columns= query param that triggers stricter RLS checks
+      .insert({ name: form.name.trim(), email: form.email.trim(), message: form.message.trim() })
 
     if (error) {
       // 7. Supabase returned an error — show failure feedback, keep form filled
