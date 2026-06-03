@@ -2,8 +2,14 @@
   "hash": "e1965997",
   "configHash": "3bf2d6ea",
   "lockfileHash": "ffa2e32d",
-  "browserHash": "1a99fe29",
+  "browserHash": "7f9a102e",
   "optimized": {
+    "@supabase/supabase-js": {
+      "src": "../../node_modules/@supabase/supabase-js/dist/index.mjs",
+      "file": "@supabase_supabase-js.js",
+      "fileHash": "14d95044",
+      "needsInterop": false
+    },
     "react-dom/client": {
       "src": "../../node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
