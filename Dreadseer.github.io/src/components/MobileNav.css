@@ -1,0 +1,60 @@
+/* Fixed bottom navigation bar — visible only on screens 768px and below */
+
+:root {
+  --color-bg-mobile-nav: #1a1a2e;
+  --color-mobile-nav-icon: #a0a0c0;
+  --color-mobile-nav-active: #e94560;
+  --mobile-nav-height: 60px;
+}
+
+/* Hidden by default on desktop — shown only via the media query below */
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--mobile-nav-height);
+    background-color: var(--color-bg-mobile-nav);
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
+    /* Prevent any horizontal overflow */
+    overflow: hidden;
+  }
+}
+
+.mobile-nav__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--color-mobile-nav-icon);
+  font-size: 1.4rem;
+  flex: 1;
+  height: 100%;
+  transition: color 0.2s ease;
+}
+
+.mobile-nav__link:hover {
+  color: #ffffff;
+}
+
+/* NavLink adds "active" class automatically when route matches */
+.mobile-nav__link.active {
+  color: var(--color-mobile-nav-active);
+}
+
+.mobile-nav__label {
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

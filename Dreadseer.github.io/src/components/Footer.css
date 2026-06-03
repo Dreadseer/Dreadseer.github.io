@@ -1,0 +1,47 @@
+/* Styles for the site-wide footer — contact info and copyright notice */
+
+:root {
+  --color-bg-footer: #12121f;
+  --color-text-footer: #8888aa;
+  --color-footer-link: #e94560;
+  --footer-bottom-pad: 1.5rem;  /* extra bottom padding on mobile for the MobileNav bar */
+}
+
+.footer {
+  background-color: var(--color-bg-footer);
+  color: var(--color-text-footer);
+  text-align: center;
+  padding: 2rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+.footer__contact {
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer__link {
+  color: var(--color-footer-link);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.footer__link:hover {
+  opacity: 0.75;
+}
+
+.footer__copy {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-footer);
+}
+
+/* Add bottom padding on mobile so the MobileNav bar doesn't obscure the footer text */
+@media (max-width: 768px) {
+  .footer {
+    padding-bottom: calc(var(--footer-bottom-pad) + 60px);
+  }
+}
