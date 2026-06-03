@@ -25,7 +25,7 @@ function Footer() {
           GitHub
         </a>
         <a
-          href="https://linkedin.com/in/dreadseer"
+          href="https://www.linkedin.com/in/christopher-clarke-11172310b/"
           target="_blank"
           rel="noopener noreferrer"
           className="footer__link"

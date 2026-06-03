@@ -32,12 +32,12 @@ function Home() {
 
         {/* TODO: Replace placeholder text with real bio */}
         <h1 id="intro-heading" className="intro__name">
-          Chris
+          Chris Clarke
         </h1>
         <p className="intro__tagline">Full-Stack Developer | Operations Leader</p>
         <p className="intro__bio">
           {/* TODO: Replace placeholder text with real bio */}
-          Hi, I'm Chris — a full-stack developer with over 10 years of operations and
+          Hi, I'm Chris Clarke — a full-stack developer with over 10 years of operations and
           leadership experience. I made a deliberate pivot into software development and
           I'm passionate about building clean, reliable applications that solve real
           problems. I'm comfortable across the stack: from React UIs to Java Spring Boot
