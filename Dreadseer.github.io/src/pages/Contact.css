@@ -1,0 +1,138 @@
+/* Styles for the Contact page — centered form with field-level error and feedback states */
+
+/* ── Page heading ── */
+.contact__heading {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e94560;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.contact__subheading {
+  font-size: 0.95rem;
+  color: #8888aa;
+  margin-bottom: 2rem;
+}
+
+/* ── Form wrapper — centered with max-width ── */
+.contact__form {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+/* ── Individual field group: label + input + error ── */
+.contact__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.contact__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #c0c0d8;
+  letter-spacing: 0.02em;
+}
+
+/* Shared styles for text input, email input, and textarea */
+.contact__input,
+.contact__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #1e1e38;
+  border: 1px solid #2e2e50;
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.95rem;
+  color: #d0d0e8;
+  outline: none;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.contact__input:focus,
+.contact__textarea:focus {
+  border-color: #e94560;
+}
+
+/* Highlight the border red when the field has a validation error */
+.contact__input--error,
+.contact__textarea--error {
+  border-color: #e94560;
+}
+
+.contact__textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Per-field inline error message — appears directly below the relevant input */
+.contact__error {
+  font-size: 0.78rem;
+  color: #e94560;
+  margin: 0;
+}
+
+/* ── Submit button ── */
+.contact__submit {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: #e94560;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.contact__submit:hover:not(:disabled) {
+  background-color: #c73652;
+}
+
+/* Visually distinct disabled state while isSubmitting is true */
+.contact__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Feedback banner — success and error variants ── */
+.contact__feedback {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0.85rem 1.1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contact__feedback--success {
+  background-color: #0d2e1a;
+  color: #4caf82;
+  border: 1px solid #2a6644;
+}
+
+.contact__feedback--error {
+  background-color: #2e0d0d;
+  color: #e94560;
+  border: 1px solid #662a2a;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .contact__form {
+    /* Full width on mobile — already handled by max-width + auto margins */
+    max-width: 100%;
+  }
+}
