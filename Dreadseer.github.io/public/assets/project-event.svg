@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="220" viewBox="0 0 400 220">
+  <rect width="400" height="220" fill="#16213e" rx="8"/>
+  <text x="200" y="90" font-family="monospace" font-size="44" text-anchor="middle" fill="#e94560" opacity="0.3">🎪</text>
+  <text x="200" y="130" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle" fill="#d0d0e8">CodeBoxx Event Experience</text>
+  <text x="200" y="154" font-family="monospace" font-size="10" text-anchor="middle" fill="#8888aa">Next.js · React · Tailwind CSS</text>
+  <text x="200" y="210" font-family="monospace" font-size="8" text-anchor="middle" fill="#444466">[ project image placeholder ]</text>
+</svg>
