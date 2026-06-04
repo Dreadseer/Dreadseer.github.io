@@ -6,13 +6,17 @@ import './Portfolio.css'
 
 // ── Sub-component: EducationCard ──────────────────────────────────────────────
 function EducationCard({ institution, program, startDate, endDate }) {
+  const dateDisplay = startDate === 'Expected'
+    ? `Expected ${endDate}`
+    : startDate
+      ? `${startDate} — ${endDate}`
+      : endDate
+
   return (
     <div className="education-card">
       <p className="education-card__institution">{institution}</p>
       <p className="education-card__program">{program}</p>
-      <p className="education-card__dates">
-        {startDate} — {endDate}
-      </p>
+      <p className="education-card__dates">{dateDisplay}</p>
     </div>
   )
 }
@@ -30,13 +34,22 @@ function WorkCard({ title, organization, startDate, endDate, description }) {
           {startDate} — {endDate}
         </span>
       </div>
-      <p className="work-card__description">{description}</p>
+      {/* Render as a bullet list when description is an array, plain text otherwise */}
+      {Array.isArray(description) ? (
+        <ul className="work-card__description-list">
+          {description.map((point, i) => (
+            <li key={i}>{point}</li>
+          ))}
+        </ul>
+      ) : (
+        <p className="work-card__description">{description}</p>
+      )}
     </div>
   )
 }
 
 // ── Sub-component: ProjectCard ────────────────────────────────────────────────
-function ProjectCard({ name, tech, description, image }) {
+function ProjectCard({ name, tech, description, image, github }) {
   return (
     <div className="project-card">
       <img
@@ -55,6 +68,18 @@ function ProjectCard({ name, tech, description, image }) {
           ))}
         </div>
         <p className="project-card__description">{description}</p>
+        {/* GitHub link — only rendered when a github URL is provided */}
+        {github && (
+          <a
+            href={github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="project-card__github"
+            aria-label={`View ${name} source code on GitHub`}
+          >
+            🐙 View on GitHub
+          </a>
+        )}
       </div>
     </div>
   )
@@ -154,6 +179,7 @@ function Portfolio() {
               tech={project.tech}
               description={project.description}
               image={project.image}
+              github={project.github}
             />
           ))}
         </div>

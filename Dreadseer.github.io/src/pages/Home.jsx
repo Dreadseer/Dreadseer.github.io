@@ -1,8 +1,7 @@
 // Home page — Introduction, Technical Skills, and Soft Skills sections
+import { useRef, useEffect } from 'react'
 import { technicalSkills, softSkills } from '../data/skills'
 import './Home.css'
-
-// AI-generated images — created with DALL-E (replace SVG placeholders with final renders)
 
 function SkillCard({ icon, name, description }) {
   return (
@@ -16,33 +15,134 @@ function SkillCard({ icon, name, description }) {
   )
 }
 
+// Reusable carousel — constant smooth scroll via requestAnimationFrame, pauses on hover
+function SkillsCarousel({ skills, label }) {
+  const trackRef = useRef(null)
+  const rafRef = useRef(null)    // requestAnimationFrame ID
+  const pausedRef = useRef(false) // tracks hover pause state without re-rendering
+
+  // Speed: pixels advanced per frame (60fps). 0.5 = ~30px/sec — smooth and readable.
+  // Increase to 1.0 for faster, decrease to 0.3 for slower.
+  const SPEED = 0.5
+
+  function startAutoScroll() {
+    const track = trackRef.current
+    if (!track) return
+
+    function step() {
+      if (!pausedRef.current && track) {
+        const { scrollLeft, scrollWidth, clientWidth } = track
+
+        // When we reach the end, jump silently back to 0 — feels seamless
+        if (scrollLeft + clientWidth >= scrollWidth - 1) {
+          track.scrollLeft = 0
+        } else {
+          track.scrollLeft += SPEED
+        }
+      }
+      // Schedule next frame
+      rafRef.current = requestAnimationFrame(step)
+    }
+
+    rafRef.current = requestAnimationFrame(step)
+  }
+
+  function stopAutoScroll() {
+    cancelAnimationFrame(rafRef.current)
+  }
+
+  // Manual arrow click — nudge by one card width without stopping the animation
+  function scroll(direction) {
+    if (trackRef.current) {
+      trackRef.current.scrollBy({ left: direction * 300, behavior: 'smooth' })
+    }
+  }
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+
+    startAutoScroll()
+
+    // Pause on hover — flip the flag instead of cancelling the RAF loop
+    // so resuming is instant with no restart lag
+    const pause  = () => { pausedRef.current = true }
+    const resume = () => { pausedRef.current = false }
+
+    track.addEventListener('mouseenter', pause)
+    track.addEventListener('mouseleave', resume)
+
+    return () => {
+      stopAutoScroll()
+      track.removeEventListener('mouseenter', pause)
+      track.removeEventListener('mouseleave', resume)
+    }
+  }, [])
+
+  return (
+    <div className="carousel">
+      <button
+        className="carousel__btn carousel__btn--left"
+        onClick={() => scroll(-1)}
+        aria-label={`Scroll ${label} left`}
+      >
+        ‹
+      </button>
+
+      {/* The scrollable track — hides scrollbar, auto-scrolls, touch-friendly */}
+      <div className="carousel__track" ref={trackRef}>
+        {skills.map((skill) => (
+          <div className="carousel__item" key={skill.name}>
+            <SkillCard
+              icon={skill.icon}
+              name={skill.name}
+              description={skill.description}
+            />
+          </div>
+        ))}
+      </div>
+
+      <button
+        className="carousel__btn carousel__btn--right"
+        onClick={() => scroll(1)}
+        aria-label={`Scroll ${label} right`}
+      >
+        ›
+      </button>
+    </div>
+  )
+}
+
 function Home() {
   return (
     <>
       {/* ── Section 1: Introduction ── */}
       <section className="home-section intro" aria-labelledby="intro-heading">
+
+        {/* Left column — text content */}
+        <div className="intro__text">
+          <h1 id="intro-heading" className="intro__name">
+            Hi, I'm Chris Clarke
+          </h1>
+          <p className="intro__tagline">Full-Stack Developer | Operations Leader</p>
+          <p className="intro__bio">
+            I'm a full-stack developer & USMC veteran with over 10 years of operations and
+            leadership experience. I made a deliberate pivot into software development and
+            I'm passionate about building clean, reliable applications that solve real
+            problems. I'm comfortable across the stack: from React UIs to Java Spring Boot
+            APIs to SQL databases.
+          </p>
+        </div>
+
+        {/* Right column — portrait photo */}
         <div className="intro__image-wrap">
-          {/* AI-generated image — created with DALL-E / Adobe Firefly */}
           <img
-            src="/assets/home-hero.svg"
-            alt="Illustrated developer portrait of Chris — a full-stack developer with a dark tech-themed background"
+            src="/assets/chris-portrait.jpg"
+            alt="Professional portrait of Chris Clarke, full-stack developer"
             className="intro__image"
           />
         </div>
 
-        {/* TODO: Replace placeholder text with real bio */}
-        <h1 id="intro-heading" className="intro__name">
-          Chris Clarke
-        </h1>
-        <p className="intro__tagline">Full-Stack Developer | Operations Leader</p>
-        <p className="intro__bio">
-          {/* TODO: Replace placeholder text with real bio */}
-          Hi, I'm Chris Clarke — a full-stack developer with over 10 years of operations and
-          leadership experience. I made a deliberate pivot into software development and
-          I'm passionate about building clean, reliable applications that solve real
-          problems. I'm comfortable across the stack: from React UIs to Java Spring Boot
-          APIs to SQL databases.
-        </p>
       </section>
 
       {/* ── Section 2: Technical Skills ── */}
@@ -50,30 +150,10 @@ function Home() {
         className="home-section home-section--alt"
         aria-labelledby="tech-skills-heading"
       >
-        <div className="skills-image-wrap">
-          {/* AI-generated image — created with DALL-E / Adobe Firefly */}
-          <img
-            src="/assets/home-skills.svg"
-            alt="Abstract tech illustration showing interconnected nodes representing a developer's skill set"
-            className="skills-image"
-          />
-        </div>
-
         <h2 id="tech-skills-heading" className="home-section__heading">
           Technical Skills
         </h2>
-
-        {/* Maps over technicalSkills array from src/data/skills.js */}
-        <div className="skills-grid">
-          {technicalSkills.map((skill) => (
-            <SkillCard
-              key={skill.name}
-              icon={skill.icon}
-              name={skill.name}
-              description={skill.description}
-            />
-          ))}
-        </div>
+        <SkillsCarousel skills={technicalSkills} label="technical skills" />
       </section>
 
       {/* ── Section 3: Soft Skills ── */}
@@ -84,18 +164,7 @@ function Home() {
         <h2 id="soft-skills-heading" className="home-section__heading">
           Soft Skills
         </h2>
-
-        {/* Same card style as Technical Skills for visual consistency */}
-        <div className="skills-grid">
-          {softSkills.map((skill) => (
-            <SkillCard
-              key={skill.name}
-              icon={skill.icon}
-              name={skill.name}
-              description={skill.description}
-            />
-          ))}
-        </div>
+        <SkillsCarousel skills={softSkills} label="soft skills" />
       </section>
     </>
   )

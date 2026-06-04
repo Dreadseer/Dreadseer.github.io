@@ -91,10 +91,10 @@
 
 .work-card__header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
   margin-bottom: 0.75rem;
 }
 
@@ -108,7 +108,7 @@
 .work-card__org {
   font-size: 0.9rem;
   color: #b0b0cc;
-  margin: 0.2rem 0 0;
+  margin: 0;
 }
 
 .work-card__dates {
@@ -123,6 +123,24 @@
   line-height: 1.75;
   color: #9090b8;
   margin: 0;
+}
+
+/* Bullet list variant — bullets removed, content centered */
+.work-card__description-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+}
+
+.work-card__description-list li {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #9090b8;
 }
 
 /* ── Download resume button ── */
@@ -165,12 +183,14 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .project-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(233, 69, 96, 0.15);
+  box-shadow: 0 10px 32px rgba(233, 69, 96, 0.35);
+  background-color: #252545;
+  border-color: #e94560;
 }
 
 .project-card__image {
@@ -220,6 +240,20 @@
   line-height: 1.7;
   color: #9090b8;
   margin: 0;
+}
+
+.project-card__github {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #a0c4ff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.project-card__github:hover {
+  color: #e94560;
 }
 
 /* ── Responsive breakpoint ── */
