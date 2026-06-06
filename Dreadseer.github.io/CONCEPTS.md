@@ -1,6 +1,6 @@
 # CONCEPTS.md — Module 16 FSO-1616 Professional Development
 
-Three concepts encountered and worked through while building this personal portfolio website.
+Three concepts encountered and worked through while building this personal portfolio website
 
 ---
 
