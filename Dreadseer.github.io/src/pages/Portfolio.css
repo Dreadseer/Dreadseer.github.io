@@ -1,0 +1,274 @@
+/* Styles for the Portfolio page — Education, Work Experience, and Projects sections */
+
+/* ── Shared section base (mirrors Home page pattern for consistency) ── */
+.portfolio-section {
+  padding: 3.5rem 0;
+}
+
+.portfolio-section--alt {
+  background-color: #13132a;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  margin: 0 -1.5rem;
+}
+
+.portfolio-section__heading {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e94560;
+  margin-bottom: 2rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Section banner images ── */
+.portfolio-banner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.portfolio-banner__img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid #2a2a4a;
+  object-fit: cover;
+}
+
+/* ── Education timeline cards ── */
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.education-card {
+  background-color: #1e1e38;
+  border: 1px solid #2e2e50;
+  border-left: 4px solid #e94560;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+}
+
+.education-card__institution {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.25rem;
+}
+
+.education-card__program {
+  font-size: 0.95rem;
+  color: #b0b0cc;
+  margin: 0 0 0.5rem;
+}
+
+.education-card__dates {
+  font-size: 0.8rem;
+  color: #e94560;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* ── Work experience timeline cards ── */
+.work-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.work-card {
+  background-color: #1e1e38;
+  border: 1px solid #2e2e50;
+  border-left: 4px solid #0f3460;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+}
+
+.work-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.work-card__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.work-card__org {
+  font-size: 0.9rem;
+  color: #b0b0cc;
+  margin: 0;
+}
+
+.work-card__dates {
+  font-size: 0.8rem;
+  color: #e94560;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.work-card__description {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: #9090b8;
+  margin: 0;
+}
+
+/* Bullet list variant — bullets removed, content centered */
+.work-card__description-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+}
+
+.work-card__description-list li {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #9090b8;
+}
+
+/* ── Download resume button ── */
+.resume-download-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.resume-download-btn {
+  display: inline-block;
+  background-color: #e94560;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.resume-download-btn:hover {
+  background-color: #c73652;
+  transform: translateY(-2px);
+}
+
+/* ── Projects grid ── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── Project card ── */
+.project-card {
+  background-color: #1e1e38;
+  border: 1px solid #2e2e50;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(233, 69, 96, 0.35);
+  background-color: #252545;
+  border-color: #e94560;
+}
+
+.project-card__image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid #2e2e50;
+}
+
+.project-card__body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.project-card__name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Tech stack badge row */
+.project-card__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tech-badge {
+  display: inline-block;
+  background-color: #0f3460;
+  color: #a0c4ff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.project-card__description {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #9090b8;
+  margin: 0;
+}
+
+.project-card__github {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #a0c4ff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.project-card__github:hover {
+  color: #e94560;
+}
+
+/* ── Responsive breakpoint ── */
+@media (max-width: 768px) {
+  .portfolio-section--alt {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  /* Single column on mobile */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .work-card__header {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,112 @@
+/* Standalone styles for the Login page — full-viewport centered card, no public header/footer */
+
+/* ── Full-viewport centering wrapper ── */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0f0f1a;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* ── Login card ── */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #1a1a2e;
+  border: 1px solid #2e2e50;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Heading — deliberately minimal, does not reveal admin purpose ── */
+.login-card__heading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 2rem;
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
+/* ── Field group: label + input stacked ── */
+.login-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.login-card__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #c0c0d8;
+  letter-spacing: 0.02em;
+}
+
+.login-card__input {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #12121f;
+  border: 1px solid #2e2e50;
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.95rem;
+  color: #d0d0e8;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.login-card__input:focus {
+  border-color: #e94560;
+}
+
+/* ── Error message — red text, sits between last field and the button ── */
+.login-card__error {
+  font-size: 0.8rem;
+  color: #e94560;
+  background-color: #2e0d0d;
+  border: 1px solid #662a2a;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ── Login button ── */
+.login-card__button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #e94560;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.login-card__button:hover:not(:disabled) {
+  background-color: #c73652;
+}
+
+/* Visually distinct disabled state during auth call */
+.login-card__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 2rem 1.25rem;
+  }
+}

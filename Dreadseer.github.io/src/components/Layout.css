@@ -1,0 +1,33 @@
+/* Styles for the global layout wrapper — ensures header never overlaps content */
+
+:root {
+  --color-bg-page: #0f0f1a;
+  --color-text-page: #d0d0e8;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-bg-page);
+  color: var(--color-text-page);
+  /* Prevent any child from causing horizontal scrollbars */
+  overflow-x: hidden;
+}
+
+/* Content area grows to push footer to the bottom */
+.layout__content {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Extra bottom padding on mobile so MobileNav (60px tall) doesn't cover content */
+@media (max-width: 768px) {
+  .layout__content {
+    padding-bottom: calc(2rem + 60px);
+  }
+}

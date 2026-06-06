@@ -1,0 +1,72 @@
+/* Styles for the sticky top header and its desktop navigation links */
+
+:root {
+  --header-height: 64px;
+  --color-bg-header: #1a1a2e;
+  --color-text-nav: #c0c0d8;
+  --color-nav-active: #e94560;
+  --color-nav-hover: #ffffff;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: var(--header-height);
+  background-color: var(--color-bg-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Logo link — no underline, no default link colour */
+.header__logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.header__logo {
+  height: 40px;
+  width: auto;
+  /* Prevent logo from ever overflowing its container */
+  max-width: 160px;
+  object-fit: contain;
+}
+
+/* Desktop nav — horizontal row of links */
+.header__nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.header__nav-link {
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text-nav);
+  letter-spacing: 0.03em;
+  transition: color 0.2s ease;
+}
+
+.header__nav-link:hover {
+  color: var(--color-nav-hover);
+}
+
+/* NavLink adds class "active" when the route matches */
+.header__nav-link.active {
+  color: var(--color-nav-active);
+  font-weight: 700;
+  border-bottom: 2px solid var(--color-nav-active);
+  padding-bottom: 2px;
+}
+
+/* ── Responsive: hide desktop nav on mobile ── */
+@media (max-width: 768px) {
+  .header__nav {
+    display: none;
+  }
+}
