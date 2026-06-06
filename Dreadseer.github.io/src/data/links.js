@@ -9,7 +9,7 @@ export const links = [
       'Covers everything from basic syntax to advanced browser APIs — ' +
       'an essential bookmark for any web developer.',
     url: 'https://developer.mozilla.org',
-    image: '/assets/link-mdn.svg',
+    image: '/assets/link-mdn.png',
   },
   {
     title: 'React Documentation',
@@ -18,7 +18,7 @@ export const links = [
       'examples for building component-based UIs. The best starting point ' +
       'for learning hooks, state management, and React patterns.',
     url: 'https://react.dev',
-    image: '/assets/link-react.svg',
+    image: '/assets/link-react.png',
   },
   {
     title: 'Supabase Docs',
@@ -27,7 +27,7 @@ export const links = [
       'and the JavaScript client library. Used in this portfolio to store ' +
       'contact messages and handle admin authentication.',
     url: 'https://supabase.com/docs',
-    image: '/assets/link-supabase.svg',
+    image: '/assets/link-supabase.png',
   },
   {
     title: 'LeetCode',
@@ -36,7 +36,7 @@ export const links = [
       'preparation used throughout the CodeBoxx program. Great for sharpening ' +
       'algorithms, data structures, and problem-solving skills.',
     url: 'https://leetcode.com',
-    image: '/assets/link-leetcode.svg',
+    image: '/assets/link-leetcode.png',
   },
   {
     title: 'GitHub',
@@ -45,7 +45,7 @@ export const links = [
       'project repositories and the source code for this deployed portfolio site. ' +
       'Essential for every developer workflow.',
     url: 'https://github.com',
-    image: '/assets/link-github.svg',
+    image: '/assets/link-github.png',
   },
   {
     title: 'Expo Documentation',
@@ -54,6 +54,6 @@ export const links = [
       'setup guides, available APIs, and deployment instructions. ' +
       'Used during the Rocket Food Delivery mobile project.',
     url: 'https://docs.expo.dev',
-    image: '/assets/link-expo.svg',
+    image: '/assets/link-expo.png',
   },
 ]

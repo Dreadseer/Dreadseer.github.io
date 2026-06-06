@@ -73,6 +73,7 @@ export const projects = [
       'Features real-time order tracking, restaurant browsing, and a Spring Boot REST API backend. ' +
       'Shared business logic across iOS and Android from a single TypeScript codebase.',
     image: '/assets/project-rocket-food.png',
+    github: 'https://github.com/Dreadseer/React-Native-Mobile-Development',
   },
   {
     name: 'CodeBloggs',
@@ -82,6 +83,7 @@ export const projects = [
       'Users can create, edit, and delete blog posts with Markdown support. ' +
       'Features JWT-based authentication, a REST API, and a React frontend.',
     image: '/assets/project-codebloggs.png',
+    github: 'https://github.com/Kazzy96/Module-9',
   },
   {
     name: 'CodeBoxx Event Experience',
@@ -91,5 +93,6 @@ export const projects = [
       'Students scan a QR code, open the app in their browser, and build a personal landing page ' +
       'or interactive mini-app in ~5 minutes — no login, no install, no coding knowledge required.',
     image: '/assets/project-event.png',
+    github: 'https://github.com/Dreadseer/git-github.com-Dreadseer-CodeBoxx-Intro-to-Dev',
   },
 ]
