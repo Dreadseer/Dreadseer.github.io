@@ -217,37 +217,143 @@
   color: var(--fg-muted);
 }
 
+/* ============================================================================
+   ACCORDION — the touch interaction model
+   All six domains are visible in one vertical scan, and the detail opens
+   directly under the row that was tapped.
+   ========================================================================== */
+
+.acc {
+  border-top: 1px solid var(--line);
+}
+
+.acc__item {
+  --accent: var(--sig-400);
+  border-bottom: 1px solid var(--line);
+}
+
+.acc__item--guard {
+  --accent: var(--guard-400);
+}
+
+/* The heading exists for document outline; the button carries the interaction. */
+.acc__heading {
+  margin: 0;
+  font: inherit;
+  letter-spacing: normal;
+}
+
+.acc__trigger {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto 22px;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  /* Comfortably above the 44px minimum touch target */
+  min-height: 60px;
+  padding: 1rem 0.25rem;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.acc__label {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  line-height: 1.25;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.acc__item.is-open .acc__label {
+  color: var(--fg-strong);
+}
+
+.acc__count {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: var(--fg-dim);
+}
+
+/* Plus that rotates into a minus — the same affordance as the case studies */
+.acc__icon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  justify-self: end;
+}
+
+.acc__icon i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 9px;
+  height: 1px;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  transition: transform var(--dur-mid) var(--ease-out);
+}
+
+.acc__icon i:last-child {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.acc__item.is-open .acc__icon i:last-child {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* Height animates to the real content height at any viewport */
+.acc__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-mid) var(--ease-inout);
+}
+
+.acc__item.is-open .acc__panel {
+  grid-template-rows: 1fr;
+}
+
+.acc__panel-inner {
+  overflow: hidden;
+  /* Keeps collapsed content out of the tab order and off screen readers */
+  visibility: hidden;
+  transition: visibility 0s linear var(--dur-mid);
+}
+
+.acc__item.is-open .acc__panel-inner {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* An accent rail marks which domain is open */
+.acc__item.is-open .acc__panel-inner {
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+}
+
+.acc__panel-inner .cap__blurb {
+  font-size: 1rem;
+  padding-bottom: 0.25rem;
+}
+
+.acc__panel-inner .cap__nodes {
+  gap: 1.15rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.5rem;
+}
+
 /* ── Responsive ──────────────────────────────────────────────────────── */
 
 @media (max-width: 900px) {
-  .cap,
   .loop {
     grid-template-columns: 1fr;
-  }
-
-  .cap__domains {
-    /* Horizontal scroller keeps all six reachable without a tall stack */
-    flex-direction: row;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .cap__domain {
-    grid-template-columns: 22px auto;
-    flex: 0 0 auto;
-    min-width: 190px;
-    scroll-snap-align: start;
-    border-left: 0;
-    border-bottom: 2px solid transparent;
-  }
-
-  .cap__domain.is-active {
-    border-left: 0;
-    border-bottom-color: var(--accent);
-  }
-
-  .cap__count {
-    display: none;
   }
 }

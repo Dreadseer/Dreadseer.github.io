@@ -1,7 +1,7 @@
 // Shared behavior hooks for the single-page experience.
 // All of them are no-ops or instant-complete under prefers-reduced-motion.
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, useSyncExternalStore } from 'react'
 
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
@@ -75,6 +75,29 @@ export function useReveal(deps = []) {
   }, deps)
 
   return containerRef
+}
+
+/**
+ * Subscribes to a media query. Used to switch between genuinely different
+ * interaction models — not to hide things — so the component tree can render
+ * the pattern that suits the input device rather than one adapted with CSS.
+ */
+export function useMediaQuery(query) {
+  // useSyncExternalStore is the right tool here: matchMedia is an external
+  // store, and subscribing this way avoids the extra render an effect-plus-
+  // setState pair would cause on mount.
+  const subscribe = useCallback(
+    (onChange) => {
+      const mql = window.matchMedia(query)
+      mql.addEventListener('change', onChange)
+      return () => mql.removeEventListener('change', onChange)
+    },
+    [query]
+  )
+
+  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query])
+
+  return useSyncExternalStore(subscribe, getSnapshot)
 }
 
 /**
