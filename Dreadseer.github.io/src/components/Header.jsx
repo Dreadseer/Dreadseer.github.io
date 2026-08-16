@@ -16,10 +16,11 @@ function Header() {
       {/* Logo — clicking it always navigates to the home page */}
       <NavLink to="/" className="header__logo-link" aria-label="Go to home page">
         <img
-          src="/assets/logo.svg"
-          alt="Dreadseer personal logo — two letters DS on a dark background"
+          src="/assets/logo-emblem.png"
+          alt="Christopher Clarke griffin emblem"
           className="header__logo"
         />
+        <span className="header__brand">Christopher Clarke</span>
       </NavLink>
 
       {/* Desktop navigation — hidden on mobile via CSS media query */}
