@@ -15,6 +15,57 @@
   overflow-x: hidden;
 }
 
+/*
+  Per-page background images. Each is layered under a dark gradient overlay so the
+  existing light body text stays readable. The overlay is part of the same
+  `background` shorthand (topmost layer first), with the dark page color as the
+  final fallback. `background-attachment: fixed` keeps the image steady while the
+  page scrolls; it falls back to a normal scroll background on mobile (below).
+*/
+.layout--bg-home,
+.layout--bg-portfolio,
+.layout--bg-links,
+.layout--bg-contact {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.layout--bg-home {
+  background-image: linear-gradient(rgba(15, 15, 26, 0.82), rgba(15, 15, 26, 0.88)),
+    url('/assets/bg-home.png');
+}
+
+.layout--bg-portfolio {
+  background-image: linear-gradient(rgba(15, 15, 26, 0.82), rgba(15, 15, 26, 0.88)),
+    url('/assets/bg-portfolio.png');
+}
+
+.layout--bg-links {
+  background-image: linear-gradient(rgba(15, 15, 26, 0.82), rgba(15, 15, 26, 0.88)),
+    url('/assets/bg-links.png');
+}
+
+.layout--bg-contact {
+  background-image: linear-gradient(rgba(15, 15, 26, 0.82), rgba(15, 15, 26, 0.88)),
+    url('/assets/bg-contact.png');
+}
+
+/*
+  `background-attachment: fixed` is janky/expensive on mobile browsers, so pin the
+  image to the top and let it scroll normally there.
+*/
+@media (max-width: 768px) {
+  .layout--bg-home,
+  .layout--bg-portfolio,
+  .layout--bg-links,
+  .layout--bg-contact {
+    background-attachment: scroll;
+    background-position: center top;
+  }
+}
+
 /* Content area grows to push footer to the bottom */
 .layout__content {
   flex: 1;
