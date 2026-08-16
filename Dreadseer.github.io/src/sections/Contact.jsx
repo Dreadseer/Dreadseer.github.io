@@ -6,7 +6,7 @@
 // than a form bolted to the bottom of a page.
 
 import { useState, useEffect, useRef } from 'react'
-import supabase from '../lib/supabaseClient'
+import supabase, { isSupabaseConfigured } from '../lib/supabaseClient'
 import { useReveal } from '../hooks/useExperience'
 import './Contact.css'
 
@@ -74,16 +74,6 @@ function Contact() {
 
     setIsSubmitting(true)
 
-    // Env vars missing — fail loudly in the UI rather than silently doing nothing.
-    if (!supabase) {
-      setFeedback({
-        type: 'error',
-        message: 'The form is unavailable right now — email works: dreadseer@gmail.com',
-      })
-      setIsSubmitting(false)
-      return
-    }
-
     const { error } = await supabase.from('messages').insert({
       name: form.name.trim(),
       email: form.email.trim(),
@@ -91,7 +81,19 @@ function Contact() {
     })
 
     if (error) {
-      setFeedback({ type: 'error', message: 'Something went wrong. Please try again.' })
+      // The visitor gets a plain apology; the console gets everything needed to
+      // diagnose it. Without this the failure is indistinguishable from a bug in
+      // the form itself — PostgREST returns the real cause in `code`/`hint`.
+      console.error('[contact] Insert into `messages` failed:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      })
+      setFeedback({
+        type: 'error',
+        message: "That didn't send. Email dreadseer@gmail.com and it will reach me.",
+      })
     } else {
       setFeedback({ type: 'success', message: "Message received. I'll get back to you." })
       setForm({ name: '', email: '', message: '' })
@@ -138,7 +140,22 @@ function Contact() {
             </ul>
           </div>
 
-          {/* ── The form ────────────────────────────────────────────── */}
+          {/* ── The form ─────────────────────────────────────────────
+              When the bundle was built without Supabase credentials the form
+              cannot deliver anything. Say so before the visitor writes a
+              message, rather than discarding it on submit. */}
+          {!isSupabaseConfigured ? (
+            <div className="contact__form panel reveal">
+              <p className="contact__form-title">Send a message</p>
+              <p className="contact__offline">
+                The message form is temporarily out of service. Email reaches me directly
+                and I answer it.
+              </p>
+              <a className="btn btn--primary" href="mailto:dreadseer@gmail.com">
+                <span>Email dreadseer@gmail.com</span>
+              </a>
+            </div>
+          ) : (
           <form className="contact__form panel reveal" onSubmit={handleSubmit} noValidate>
             <p className="contact__form-title">Send a message</p>
 
@@ -211,6 +228,7 @@ function Contact() {
               <span>{isSubmitting ? 'Sending…' : 'Send message'}</span>
             </button>
           </form>
+          )}
         </div>
       </div>
     </section>
