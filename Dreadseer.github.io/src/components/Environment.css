@@ -1,0 +1,100 @@
+/* The fixed environment plane that sits behind all content. */
+
+.env {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-env);
+  pointer-events: none;
+  background: var(--void);
+  /* Isolate so the plates' blending never leaks onto content above */
+  isolation: isolate;
+}
+
+.env__plate {
+  position: absolute;
+  inset: -3%;
+  background-size: cover;
+  /* Anchored right: the artwork's subject sits in the right margin, clear of
+     the text column, instead of being hidden behind it. */
+  background-position: 78% center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition:
+    opacity 1200ms var(--ease-inout),
+    transform 500ms var(--ease-out);
+  will-change: opacity, transform;
+}
+
+.env__plate.is-active {
+  opacity: 0.52;
+}
+
+/*
+  The grade layer. A horizontal ramp keeps the left column near-solid for text
+  contrast and lets the art breathe on the right; a vertical ramp seats the
+  image into the page top and bottom.
+*/
+.env__grade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      var(--void) 0%,
+      rgba(4, 6, 12, 0.96) 26%,
+      rgba(4, 6, 12, 0.72) 48%,
+      rgba(4, 6, 12, 0.42) 72%,
+      rgba(4, 6, 12, 0.55) 100%
+    ),
+    linear-gradient(
+      180deg,
+      var(--void) 0%,
+      transparent 22%,
+      transparent 74%,
+      var(--void) 100%
+    );
+}
+
+/* A cool center bloom so the plane reads as lit rather than flat black. */
+.env__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 90% at 72% 42%,
+    var(--sig-wash) 0%,
+    transparent 58%
+  );
+}
+
+/*
+  Below the desktop breakpoint the text spans the full width, so the horizontal
+  ramp is replaced with a flat scrim — the art becomes atmosphere rather than
+  a composed right-hand subject.
+*/
+@media (max-width: 900px) {
+  .env__plate {
+    background-position: 68% center;
+  }
+
+  .env__plate.is-active {
+    opacity: 0.34;
+  }
+
+  .env__grade {
+    background:
+      linear-gradient(
+        180deg,
+        var(--void) 0%,
+        rgba(4, 6, 12, 0.82) 30%,
+        rgba(4, 6, 12, 0.88) 70%,
+        var(--void) 100%
+      );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .env__plate {
+    transition: opacity 1ms linear;
+    transform: none !important;
+  }
+}

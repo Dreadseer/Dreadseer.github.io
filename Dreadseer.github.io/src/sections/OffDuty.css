@@ -1,0 +1,127 @@
+.offduty__interests {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(1.5rem, 3vw, 3rem);
+  max-width: 1140px;
+}
+
+.offduty__interest {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.offduty__interest-label {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  color: var(--fg-strong);
+}
+
+.offduty__interest-text {
+  margin-top: 0.75rem;
+  font-size: var(--t-small);
+  line-height: 1.7;
+  color: var(--fg-muted);
+}
+
+/* ── Reference stack ─────────────────────────────────────────────────── */
+
+.refs {
+  margin-top: clamp(3.5rem, 7vw, 6rem);
+  max-width: 1140px;
+}
+
+.refs__title {
+  font-size: var(--t-h2);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.refs__note {
+  margin-top: 0.85rem;
+  max-width: 52ch;
+  color: var(--fg-muted);
+  font-size: var(--t-small);
+}
+
+.refs__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 1px;
+  margin-top: 2rem;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+}
+
+.ref {
+  display: block;
+  height: 100%;
+  padding: 1.35rem 1.4rem;
+  background: rgba(7, 11, 20, 0.72);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.ref:hover {
+  background: rgba(17, 26, 43, 0.9);
+}
+
+.ref__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  color: var(--fg-strong);
+}
+
+.ref__arrow {
+  color: var(--sig-400);
+  transform: translate(-2px, 2px);
+  opacity: 0;
+  transition: all var(--dur-mid) var(--ease-out);
+}
+
+.ref:hover .ref__arrow,
+.ref:focus-visible .ref__arrow {
+  opacity: 1;
+  transform: none;
+}
+
+.ref__desc {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: var(--t-small);
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+/* ── Sequence hint ───────────────────────────────────────────────────── */
+
+.offduty__hint {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-wide);
+  /* Kept quiet through color rather than opacity, so it still meets contrast. */
+  color: var(--fg-dim);
+  transition: color var(--dur-slow) var(--ease-out);
+  user-select: none;
+}
+
+.offduty__hint:hover {
+  color: var(--sig-400);
+}
+
+/* The hint is decorative and pointer-only; hide it where it cannot be used. */
+@media (hover: none) {
+  .offduty__hint {
+    display: none;
+  }
+}
