@@ -54,8 +54,13 @@ function loadEnv() {
 }
 
 const env = { ...loadEnv(), ...process.env }
-const URL_ = env.VITE_SUPABASE_URL
-const KEY = env.VITE_SUPABASE_ANON_KEY
+
+// A .env saved from Windows carries CRLF, and a trailing \r rides along into
+// the value. It corrupts an Authorization header and breaks URL matching, so
+// strip surrounding whitespace before anything else touches these.
+const clean = (v) => (typeof v === 'string' ? v.trim() : v)
+const URL_ = clean(env.VITE_SUPABASE_URL)
+const KEY = clean(env.VITE_SUPABASE_ANON_KEY)
 
 let failed = false
 const finding = (msg) => { failed = true; fail(msg) }
@@ -83,8 +88,15 @@ if (!/^https:\/\/[a-z0-9-]+\.supabase\.(co|in)$/.test(URL_.replace(/\/$/, ''))) 
   warn('URL does not look like a standard Supabase project URL')
 }
 
-// The anon key is a JWT; decoding it locally catches a wrong-key paste fast.
-try {
+// Catch a wrong-key paste before spending a round trip on it.
+if (KEY.startsWith('sb_secret_') || KEY.startsWith('service_role')) {
+  finding('This is a SECRET key — it must never be shipped to a browser')
+  info('Use the publishable/anon key from Settings -> API.')
+} else if (KEY.startsWith('sb_publishable_')) {
+  pass('Key is a publishable key (current Supabase format)')
+} else {
+  // Legacy keys are JWTs, so the role can be read locally.
+  try {
   const payload = JSON.parse(Buffer.from(KEY.split('.')[1], 'base64').toString())
   if (payload.role !== 'anon') {
     finding(`Key role is "${payload.role}", expected "anon"`)
@@ -94,9 +106,10 @@ try {
   } else {
     pass('Key decodes as a JWT with role "anon"')
   }
-  if (payload.exp && payload.exp * 1000 < Date.now()) finding('Key is expired')
-} catch {
-  warn('Key is not a decodable JWT (may be a newer publishable key format)')
+    if (payload.exp && payload.exp * 1000 < Date.now()) finding('Key is expired')
+  } catch {
+    warn('Key is neither a known Supabase key format nor a decodable JWT')
+  }
 }
 
 const base = URL_.replace(/\/$/, '')
@@ -111,14 +124,16 @@ const req = async (path, init = {}) => {
 }
 
 /* ── 2. Reachability ─────────────────────────────────────────────────── */
-step(2, 'Project reachable and key accepted')
+step(2, 'Project reachable')
 try {
   const { res } = await req('/rest/v1/')
+  // The PostgREST root is not a health check: current Supabase projects return
+  // 401 there for anon even when the key is perfectly valid. Only a network
+  // failure is conclusive at this stage — whether the key is accepted is
+  // decided by the table request in step 3.
+  pass(`REST endpoint responded ${res.status}`)
   if (res.status === 401 || res.status === 403) {
-    finding(`REST root returned ${res.status} — the anon key is being rejected`)
-    info('The key likely belongs to a different project, or was rotated.')
-  } else {
-    pass(`REST endpoint responded ${res.status}`)
+    info('Root requires elevated access; key validity is judged in step 3.')
   }
 } catch (e) {
   finding(`Network error: ${e.message}`)
@@ -134,6 +149,10 @@ const probe = await req('/rest/v1/messages?select=*&limit=1')
 if (probe.res.status === 404 || probe.json?.code === '42P01') {
   finding('Table `messages` does not exist, or is not exposed through the API')
   info("Supabase -> Table Editor: confirm the table exists in the `public` schema.")
+} else if (probe.res.status === 401 && /invalid|jwt|api key/i.test(probe.text)) {
+  finding('The anon key is being rejected by the project')
+  info('It likely belongs to a different project, or has been rotated.')
+  info(`response: ${probe.text.slice(0, 200)}`)
 } else if (probe.res.status === 401 || probe.res.status === 403) {
   warn(`SELECT is blocked (${probe.res.status}) — expected if there is no anon SELECT policy`)
   info('Not a problem for the contact form: it only needs INSERT.')
@@ -155,31 +174,42 @@ const payload = {
   email: 'diagnostic@example.com',
   message: `Automated probe — safe to delete. [${marker}]`,
 }
-info(`POST /rest/v1/messages  ${JSON.stringify(payload)}`)
 
-const ins = await req('/rest/v1/messages', {
-  method: 'POST',
-  headers: { Prefer: 'return=representation' },
-  body: JSON.stringify(payload),
-})
+// Go through supabase-js rather than raw fetch, so this is byte-for-byte the
+// request the contact form makes.
+//
+// Do NOT add `Prefer: return=representation` here. Asking PostgREST to return
+// the inserted row makes the statement a RETURNING, which requires the new row
+// to be visible under a SELECT policy. This project intentionally has no anon
+// SELECT policy, so the read-back fails, aborts the transaction, and Postgres
+// reports it as 42501 "new row violates row-level security policy" — which
+// reads exactly like a broken INSERT policy while the INSERT is in fact fine.
+const { createClient } = await import('@supabase/supabase-js')
+const client = createClient(URL_, KEY)
 
-if (ins.res.ok) {
-  pass(`INSERT succeeded (${ins.res.status}) — the database side is working`)
-  const row = Array.isArray(ins.json) ? ins.json[0] : ins.json
-  if (row) info(`Row id: ${row.id ?? '(no id column returned)'}`)
+info(`insert into messages ${JSON.stringify(payload)}`)
+const { error: insErr } = await client.from('messages').insert(payload)
+
+if (!insErr) {
+  pass('INSERT succeeded — the database side is working')
 
   if (!KEEP) {
     step(5, 'Cleaning up the probe row')
-    const del = await req(`/rest/v1/messages?message=like.*${marker}*`, { method: 'DELETE' })
-    if (del.res.ok) pass('Probe row deleted')
-    else {
-      warn(`Could not delete probe row (${del.res.status}) — anon DELETE is correctly restricted`)
+    const { error: delErr } = await client.from('messages').delete().eq('email', payload.email)
+    if (!delErr) {
+      // A permitted DELETE and an RLS-filtered no-op are indistinguishable here,
+      // because anon cannot read the table back to confirm.
+      pass('Delete accepted (cannot be verified without read access)')
+      info(`If it lingers, remove it from the back office. Marker: ${marker}`)
+    } else {
+      warn(`Could not delete probe row: ${delErr.message}`)
       info(`Remove it manually from the back office. Marker: ${marker}`)
     }
   } else {
     info(`Probe row kept. Marker: ${marker}`)
   }
 } else {
+  const ins = { res: { status: insErr.code === '42501' ? 401 : 400 }, json: insErr }
   const code = ins.json?.code
   finding(`INSERT failed — HTTP ${ins.res.status}${code ? ` (Postgres ${code})` : ''}`)
   if (ins.json?.message) info(`message: ${ins.json.message}`)
