@@ -1,0 +1,90 @@
+/* ============================================================================
+   DESIGN TOKENS — "Signal Line" system
+   Brand: deep navy + charcoal ground, electric blue signal, crimson used
+   sparingly as the "protector" accent. Nothing here is decorative-only; each
+   token maps to a role used across the site.
+   ========================================================================== */
+
+:root {
+  /* ── Ground: the environment the content sits in ───────────────────────── */
+  --void: #04060c;
+  --ink-900: #070b14;
+  --ink-800: #0b111d;
+  --ink-700: #111a2b;
+  --ink-600: #18243a;
+
+  /* Hairlines and panel edges */
+  --line: #1b2942;
+  --line-soft: rgba(120, 160, 220, 0.12);
+  --line-strong: rgba(120, 170, 255, 0.28);
+
+  /* ── Signal: electric blue, the "technology / forward movement" axis ───── */
+  --sig-700: #1552c8;
+  --sig-600: #2172f0;
+  --sig-500: #3a8bff;
+  --sig-400: #6aa9ff;
+  --sig-300: #9cc6ff;
+  --sig-glow: rgba(58, 139, 255, 0.42);
+  --sig-wash: rgba(58, 139, 255, 0.09);
+
+  /* ── Guard: crimson, the "protector" accent. Used with restraint. ─────── */
+  --guard-600: #b01028;
+  --guard-500: #d21c39;
+  --guard-400: #ec4560;
+  --guard-wash: rgba(210, 28, 57, 0.12);
+
+  /* ── Type colors ───────────────────────────────────────────────────────── */
+  --fg: #e8edf7;
+  --fg-strong: #ffffff;
+  --fg-muted: #97a5bf;
+  /* Verified at 4.9:1 against --void — the previous value failed WCAG AA for
+     the small mono labels this is used on. */
+  --fg-dim: #7381a0;
+
+  /* ── Typography ────────────────────────────────────────────────────────── */
+  --font-display: 'Saira', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Consolas, monospace;
+
+  /* Fluid scale — clamps keep large editorial type from breaking small screens */
+  --t-hero: clamp(2.75rem, 9.5vw, 8.5rem);
+  --t-display: clamp(2.1rem, 5.6vw, 4.6rem);
+  --t-h2: clamp(1.75rem, 3.6vw, 3rem);
+  --t-h3: clamp(1.15rem, 1.9vw, 1.5rem);
+  --t-body: clamp(1rem, 1.12vw, 1.125rem);
+  --t-small: 0.875rem;
+  --t-micro: 0.72rem;
+
+  /* Technical label treatment — used for HUD readouts and section indices */
+  --track-wide: 0.22em;
+  --track-mid: 0.08em;
+
+  /* ── Rhythm ────────────────────────────────────────────────────────────── */
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --rail-w: 88px;              /* desktop signal-line rail width */
+  --measure: 62ch;             /* readable line length */
+  --section-y: clamp(5.5rem, 12vh, 10rem);
+
+  /* ── Motion ────────────────────────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur-mid: 420ms;
+  --dur-slow: 900ms;
+
+  /* ── Depth ─────────────────────────────────────────────────────────────── */
+  --z-env: 0;
+  --z-content: 10;
+  --z-rail: 60;
+  --z-nav: 70;
+  --z-overlay: 90;
+}
+
+/* Motion is a design choice, not a requirement — honor the user's setting. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-mid: 1ms;
+    --dur-slow: 1ms;
+  }
+}

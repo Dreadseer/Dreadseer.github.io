@@ -1,0 +1,212 @@
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(2, 4, 8, 0.82);
+  backdrop-filter: blur(8px);
+  animation: overlay-in var(--dur-mid) var(--ease-out);
+  overflow-y: auto;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.sheet-card {
+  width: min(560px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: linear-gradient(180deg, var(--ink-700), var(--ink-900));
+  border: 1px solid rgba(58, 139, 255, 0.34);
+  border-radius: 3px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  animation: card-in var(--dur-mid) var(--ease-out);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+}
+
+.sheet-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.sheet-card__egg {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--guard-400);
+}
+
+.sheet-card__title {
+  margin-top: 0.5rem;
+  font-size: 1.75rem;
+  text-transform: uppercase;
+}
+
+.sheet-card__close {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.sheet-card__close:hover {
+  color: var(--fg-strong);
+  border-color: var(--sig-500);
+}
+
+/* ── Meta ────────────────────────────────────────────────────────────── */
+
+.sheet-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 1.5rem 0;
+}
+
+.sheet-card__meta div {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.sheet-card__meta dt {
+  flex-shrink: 0;
+  width: 84px;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.sheet-card__meta dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: var(--track-mid);
+  color: var(--fg-strong);
+}
+
+/* ── Stats ───────────────────────────────────────────────────────────── */
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line);
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.stat__label {
+  font-size: var(--t-small);
+  color: var(--fg-muted);
+}
+
+.stat__bar {
+  height: 5px;
+  background: var(--ink-600);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.stat__bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--sig-600), var(--sig-400));
+  animation: stat-fill 900ms var(--ease-out) backwards;
+}
+
+@keyframes stat-fill {
+  from {
+    width: 0 !important;
+  }
+}
+
+.stat__value {
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  color: var(--sig-300);
+  text-align: right;
+}
+
+/* ── Passives ────────────────────────────────────────────────────────── */
+
+.sheet-card__passives {
+  margin-top: 1.6rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line);
+}
+
+.sheet-card__passives-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  margin-bottom: 0.7rem;
+}
+
+.sheet-card__passives li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: var(--t-small);
+  line-height: 1.7;
+  color: var(--fg-muted);
+}
+
+.sheet-card__passives li::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  color: var(--guard-500);
+  font-size: 0.6rem;
+  top: 0.35rem;
+}
+
+.sheet-card__foot {
+  margin-top: 1.5rem;
+  font-size: var(--t-micro);
+  font-family: var(--font-mono);
+  color: var(--fg-dim);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-overlay,
+  .sheet-card,
+  .stat__bar span {
+    animation: none;
+  }
+}

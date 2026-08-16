@@ -1,47 +1,50 @@
-/* Styles for the site-wide footer — contact info and copyright notice */
-
-:root {
-  --color-bg-footer: #12121f;
-  --color-text-footer: #8888aa;
-  --color-footer-link: #e94560;
-  --footer-bottom-pad: 1.5rem;  /* extra bottom padding on mobile for the MobileNav bar */
-}
-
 .footer {
-  background-color: var(--color-bg-footer);
-  color: var(--color-text-footer);
-  text-align: center;
-  padding: 2rem 1.5rem;
-  font-size: 0.875rem;
+  position: relative;
+  z-index: var(--z-content);
+  border-top: 1px solid var(--line);
+  background: rgba(4, 6, 12, 0.72);
+  backdrop-filter: blur(6px);
+  padding: 2.25rem 0;
 }
 
-.footer__contact {
-  margin-bottom: 0.75rem;
+.footer__inner {
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 1.25rem;
 }
 
-.footer__link {
-  color: var(--color-footer-link);
-  text-decoration: none;
-  transition: opacity 0.2s ease;
+.footer__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--fg-muted);
 }
 
-.footer__link:hover {
-  opacity: 0.75;
+.footer__brand img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  opacity: 0.9;
 }
 
+.footer__colophon,
 .footer__copy {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--color-text-footer);
+  font-size: var(--t-micro);
+  font-family: var(--font-mono);
+  letter-spacing: var(--track-mid);
+  color: var(--fg-dim);
 }
 
-/* Add bottom padding on mobile so the MobileNav bar doesn't obscure the footer text */
-@media (max-width: 768px) {
-  .footer {
-    padding-bottom: calc(var(--footer-bottom-pad) + 60px);
+@media (max-width: 720px) {
+  .footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
   }
 }

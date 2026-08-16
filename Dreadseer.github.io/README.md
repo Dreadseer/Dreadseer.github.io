@@ -62,43 +62,35 @@ This is Chris Clarke's personal developer portfolio — a static frontend websit
 
 ```
 Dreadseer.github.io/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          # Auto-deploys to GitHub Pages on push to main
+├── .github/workflows/deploy.yml   # Auto-deploys to GitHub Pages on push to main
 ├── public/
-│   └── assets/                 # All static images, logos, and resume PDF
-│       ├── logo.svg            # Site logo displayed in the header
-│       ├── chris-portrait.jpg  # Profile photo used on the Home page
-│       ├── project-*.png       # Project card screenshots
-│       ├── link-*.png          # Link card images
-│       └── resume.pdf          # Downloadable resume (add before submission)
+│   ├── fonts/                     # Self-hosted Saira + Inter subsets (no CDN at runtime)
+│   ├── favicon.ico, favicon-*.png # Favicon set generated from the crest
+│   └── assets/                    # Images, backgrounds (webp), résumé PDF
 ├── src/
-│   ├── components/             # Reusable UI components shared across pages
-│   │   ├── Header.jsx          # Sticky top nav bar with logo and nav links
-│   │   ├── Footer.jsx          # Site footer with contact links and copyright
-│   │   ├── Layout.jsx          # Wraps all public pages (Header + content + Footer)
-│   │   ├── MobileNav.jsx       # Fixed bottom icon navigation (mobile only, ≤768px)
-│   │   └── MessageModal.jsx    # Modal popup for viewing a full message in Back Office
-│   ├── data/                   # All hardcoded content — edit here to update the site
-│   │   ├── skills.js           # Technical and soft skills arrays (Home page)
-│   │   ├── portfolio.js        # Education, work experience, and projects (Portfolio page)
-│   │   └── links.js            # Resource link cards (Links page)
-│   ├── lib/
-│   │   └── supabaseClient.js   # Supabase client singleton — imported everywhere needed
-│   ├── pages/                  # One file per route
-│   │   ├── Home.jsx            # / — Introduction, skills carousels
-│   │   ├── Portfolio.jsx       # /portfolio — Education, work, projects, resume download
-│   │   ├── Links.jsx           # /links — Curated developer resource cards
-│   │   ├── Contact.jsx         # /contact — Contact form that inserts to Supabase
-│   │   ├── Login.jsx           # /login — Hidden admin login (no nav link)
-│   │   └── BackOffice.jsx      # /backoffice — Protected admin message inbox
-│   ├── App.jsx                 # Router setup — public routes inside Layout, admin outside
-│   └── main.jsx                # Vite entry point — renders <App />
-├── index.html                  # HTML shell (Vite injects the React app here)
-├── vite.config.js              # Vite config — base: '/' for GitHub Pages
-├── package.json                # Project dependencies and scripts
-├── .env                        # Local secrets — NEVER commit this file
-└── .gitignore                  # Includes .env
+│   ├── components/
+│   │   ├── SignalRail.jsx         # Left rail: progress + section nav (mobile: top bar + menu)
+│   │   ├── Environment.jsx        # Fixed background plane; cross-fades art per section
+│   │   ├── CharacterSheet.jsx     # Easter egg dialog (hidden key sequence)
+│   │   ├── Footer.jsx
+│   │   └── MessageModal.jsx       # Used by the admin back office
+│   ├── sections/                  # The seven sections of the experience
+│   │   ├── Hero.jsx  Trajectory.jsx  Capabilities.jsx
+│   │   ├── Work.jsx  Record.jsx  OffDuty.jsx  Contact.jsx
+│   ├── hooks/useExperience.js     # reveal, active section, scroll progress, parallax, konami
+│   ├── data/                      # All site content lives here
+│   │   ├── story.js               # Trajectory phases + translations
+│   │   ├── capabilities.js        # Capability domains + AI loop
+│   │   ├── portfolio.js           # Education, work history, project case studies
+│   │   ├── links.js               # Reference stack
+│   │   └── offduty.js             # Interests + character sheet
+│   ├── styles/                    # tokens.css, fonts.css, sections.css
+│   ├── pages/
+│   │   ├── Experience.jsx         # Composes the single-page experience
+│   │   ├── Login.jsx  BackOffice.jsx
+│   ├── lib/supabaseClient.js
+│   ├── App.jsx  main.jsx  index.css
+└── vite.config.js
 ```
 
 ---
@@ -191,23 +183,26 @@ You should see the portfolio home page. If you see a warning in the console abou
 
 ## Pages & Routes
 
-This app uses `HashRouter` from React Router. GitHub Pages serves static files and cannot handle path-based routing without a server — the `#` hash prefix solves this. All URLs look like `https://Dreadseer.github.io/#/portfolio`.
+The public portfolio is a **single continuous experience** at `/#/` — seven sections on one page, navigated by the signal rail rather than by page loads. The former page routes are kept as aliases so any link already in the wild still resolves.
 
-| Route | Page | Who can access it | Has Header & Footer? |
-|---|---|---|---|
-| `/#/` | Home | Everyone | ✅ Yes |
-| `/#/portfolio` | Portfolio | Everyone | ✅ Yes |
-| `/#/links` | Links | Everyone | ✅ Yes |
-| `/#/contact` | Contact | Everyone | ✅ Yes |
-| `/#/login` | Login | Admin only — type URL directly | ❌ No |
-| `/#/backoffice` | Back Office | Admin only — must be logged in | ❌ No |
+This app uses `HashRouter` from React Router. GitHub Pages serves static files and cannot handle path-based routing without a server — the `#` hash prefix solves this.
 
-**How Layout works:**
-In `App.jsx`, the four public routes are nested inside a `<Layout>` component. `Layout` renders the Header, then the page content via `<Outlet />`, then the Footer and MobileNav. The `/login` and `/backoffice` routes are flat routes outside `<Layout>` — they have their own standalone styling with no public navigation.
+| Route | Resolves to | Who can access it |
+|---|---|---|
+| `/#/` | The experience (all sections) | Everyone |
+| `/#/portfolio` | Experience, scrolled to **The Work** | Everyone |
+| `/#/links` | Experience, scrolled to **Off Duty** | Everyone |
+| `/#/contact` | Experience, scrolled to **Contact** | Everyone |
+| `/#/login` | Login | Admin only — type URL directly |
+| `/#/backoffice` | Back Office | Admin only — must be logged in |
+
+**Sections, in order:** Identity → Trajectory → Capabilities → The Work → Record → Off Duty → Contact.
+
+`src/pages/Experience.jsx` composes the sections, tracks the active one, and maps the legacy pathnames to their replacement sections. `/login` and `/backoffice` remain standalone routes with their own UI and no site chrome.
 
 **Responsive navigation:**
-- **Desktop (> 768px):** Horizontal nav links appear in the sticky header
-- **Mobile (≤ 768px):** Header nav links hide; a fixed bottom icon bar appears with emoji icons for the four public pages
+- **Desktop (> 900px):** a fixed left signal rail — scroll progress, section nodes, and navigation in one device
+- **Mobile (≤ 900px):** a top bar with a progress hairline and a full-screen section menu
 
 ---
 
@@ -320,17 +315,17 @@ The back office is a hidden, protected admin page — it is not linked anywhere 
 
 All site text and data lives in `src/data/`. You never need to edit JSX files just to update written content.
 
-### Home page skills (`src/data/skills.js`)
+### Capabilities (`src/data/capabilities.js`)
 - `technicalSkills` — array of `{ name, description, icon }` — shown in the auto-scrolling technical skills carousel
 - `softSkills` — array of `{ name, description, icon }` — shown in the soft skills carousel
 - `icon` can be any emoji or Unicode character
 
-### Portfolio page content (`src/data/portfolio.js`)
+### Experience, education & project case studies (`src/data/portfolio.js`)
 - `education` — array of `{ institution, program, startDate, endDate }`
 - `workExperience` — array of `{ title, organization, startDate, endDate, description[] }` — `description` is an array of bullet point strings
 - `projects` — array of `{ name, tech[], description, image, github? }` — `github` is optional; if provided, a GitHub link appears on the card
 
-### Links page (`src/data/links.js`)
+### Reference stack (`src/data/links.js`)
 - `links` — array of `{ title, description, url, image }` — each becomes a clickable card
 
 ### Replacing images

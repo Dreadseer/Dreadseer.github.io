@@ -1,42 +1,23 @@
-// Site-wide footer — contact links and auto-updating copyright year
+// Site footer — closes the page without competing with the contact section.
 import './Footer.css'
 
 function Footer() {
-  // Auto-updates every year without any code change
   const year = new Date().getFullYear()
 
   return (
     <footer className="footer">
-      <div className="footer__contact">
-        <a
-          href="mailto:dreadseer@gmail.com"
-          className="footer__link"
-          aria-label="Send Chris an email"
-        >
-          dreadseer@gmail.com
-        </a>
-        <a
-          href="https://github.com/Dreadseer"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer__link"
-          aria-label="Visit Chris's GitHub profile (opens in new tab)"
-        >
-          GitHub
-        </a>
-        <a
-          href="https://www.linkedin.com/in/christopher-clarke-11172310b/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer__link"
-          aria-label="Visit Chris's LinkedIn profile (opens in new tab)"
-        >
-          LinkedIn
-        </a>
+      <div className="shell footer__inner">
+        <div className="footer__brand">
+          <img src="/assets/logo-emblem.webp" alt="" width="30" height="30" />
+          <span>Builder · Protector · Creator</span>
+        </div>
+
+        <p className="footer__colophon">
+          Built with React and Vite. Deployed from GitHub Actions. No template.
+        </p>
+
+        <p className="footer__copy">© {year} Christopher Clarke</p>
       </div>
-      <p className="footer__copy">
-        &copy; {year} Chris (Dreadseer). All rights reserved.
-      </p>
     </footer>
   )
 }

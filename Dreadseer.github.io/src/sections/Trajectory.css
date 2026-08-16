@@ -1,0 +1,206 @@
+/* ── Phase list ──────────────────────────────────────────────────────── */
+
+.phases {
+  max-width: 78ch;
+}
+
+.phase {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.75rem);
+  padding-bottom: clamp(2.75rem, 5vw, 4rem);
+}
+
+.phase:last-child {
+  padding-bottom: 0;
+}
+
+/* The marker continues the rail's signal line through the story */
+.phase__marker {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 0.4rem;
+}
+
+.phase__dot {
+  position: relative;
+  z-index: 1;
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--sig-500);
+  border-radius: 50%;
+  background: var(--void);
+  box-shadow: 0 0 0 4px rgba(58, 139, 255, 0.08);
+}
+
+.phase__stem {
+  position: absolute;
+  top: 1.35rem;
+  bottom: -1.5rem;
+  width: 1px;
+  background: linear-gradient(180deg, var(--line-strong), transparent);
+}
+
+.phase:last-child .phase__stem {
+  display: none;
+}
+
+/* ── Phase content ───────────────────────────────────────────────────── */
+
+.phase__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+}
+
+.phase__index {
+  color: var(--sig-400);
+}
+
+.phase__label {
+  color: var(--fg);
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+
+.phase__period {
+  color: var(--fg-dim);
+  margin-left: auto;
+}
+
+.phase__title {
+  margin-top: 0.9rem;
+  font-size: var(--t-h3);
+  letter-spacing: -0.01em;
+}
+
+.phase__org {
+  margin-top: 0.3rem;
+  font-size: var(--t-small);
+  color: var(--sig-300);
+}
+
+.phase__summary {
+  margin-top: 0.85rem;
+  color: var(--fg-muted);
+  max-width: 60ch;
+}
+
+.phase__tags {
+  margin-top: 1.1rem;
+}
+
+/* ── The translation strip ───────────────────────────────────────────── */
+
+.translate {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+  padding: 1rem 1.2rem;
+  background: linear-gradient(
+    90deg,
+    rgba(58, 139, 255, 0.09),
+    rgba(58, 139, 255, 0.01) 78%
+  );
+  border-left: 2px solid var(--sig-500);
+}
+
+.translate__from {
+  font-size: var(--t-small);
+  color: var(--fg-dim);
+}
+
+.translate__arrow {
+  display: block;
+  width: 44px;
+  color: var(--sig-500);
+  flex-shrink: 0;
+}
+
+.translate__arrow svg {
+  width: 100%;
+  height: auto;
+}
+
+.translate__to {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  color: var(--fg-strong);
+}
+
+/* ── Thesis grid ─────────────────────────────────────────────────────── */
+
+.thesis {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--line);
+}
+
+.thesis__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+  gap: 1px;
+  margin-top: 1.75rem;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+}
+
+.thesis__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.15rem 1.3rem;
+  background: rgba(7, 11, 20, 0.72);
+}
+
+.thesis__from {
+  font-size: var(--t-small);
+  color: var(--fg-dim);
+}
+
+.thesis__became {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--guard-400);
+}
+
+.thesis__to {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: var(--track-mid);
+  color: var(--fg-strong);
+}
+
+@media (max-width: 640px) {
+  .phase {
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 0.85rem;
+  }
+
+  .phase__period {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .translate {
+    padding: 0.9rem 1rem;
+  }
+
+  .translate__arrow {
+    width: 32px;
+  }
+}
