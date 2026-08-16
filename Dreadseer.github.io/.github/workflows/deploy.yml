@@ -5,11 +5,6 @@ on:
   push:
     branches:
       - main
-  # Adds a "Run workflow" button on the Actions tab. Needed because the build
-  # inlines Supabase credentials at build time: changing a repository secret
-  # does not rebuild anything on its own, and without this the only way to pick
-  # up a new secret is to push another commit.
-  workflow_dispatch:
 
 permissions:
   contents: read
